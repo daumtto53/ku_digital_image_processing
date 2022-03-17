@@ -60,10 +60,21 @@ def extract_skin_color(file_path):
 
     dst = np.zeros((height, width, 3), dtype=np.uint8)
 
+
     for i in range(height):
         for j in range(width):
-            if H[i][j] >= 0.25 and H[i][j] <= 0.6:
+            if (H[i][j] >= 0.05 and H[i][j] <= 0.8) and \
+                    (S[i][j] >= 0.10 and S[i][j] <= 0.90) and \
+                    (I[i][j] >= 0.30 and I[i][j] <= 0.90) :
                 dst[i][j] = src[i][j]
+
+    # for i in range(height):
+    #     for j in range(width):
+    #         if (H[i][j] >= 0.25 and H[i][j] <= 0.6) and \
+    #                 (S[i][j] >= 0.15 and S[i][j] <= 0.90) and \
+    #                 (I[i][j] >= 0.15 and I[i][j] <= 0.90) :
+    #             dst[i][j] = src[i][j]
+
     cv2.imshow('dst', dst)
     cv2.imshow('src', src)
     cv2.waitKey(0)

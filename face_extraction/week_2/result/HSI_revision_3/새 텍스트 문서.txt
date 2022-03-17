@@ -1,0 +1,5 @@
+    for i in range(height):
+        for j in range(width):
+            if (H[i][j] >= 0.25 and H[i][j] <= 0.6) and \
+                    (S[i][j] >= 0.15 and S[i][j] <= 0.90) and \
+                    (I[i][j] >= 0.15 and I[i][j] <= 0.90) :
