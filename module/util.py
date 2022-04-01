@@ -17,7 +17,7 @@ def show_image(window_name, array_of_image):
 
 
 def compare_image(window_name, src, dst):
-    cv2.imshow(window_name, src)
-    cv2.imshow(window_name+" after", dst)
+    cv2.imshow(window_name, dst)
+    cv2.imshow(window_name+" after", src)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
