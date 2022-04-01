@@ -32,6 +32,18 @@ def point_process_colorscale_negative_rgb(file_path):
     return new_image, src
 
 
+def show_colorscale_negative_rgb(window_name, file_path):
+    res = point_process_colorscale_negative_rgb(file_path)
+    util.compare_image(window_name, res[0], res[1])
+
+
+def show_colorscale_negative_rgb_result():
+    for i in range(len(color_image_tuple)):
+        show_colorscale_negative_rgb(color_image_tuple[i], PATH + color_image_tuple[i] + bmp)
+
+
+
+
 def point_process_colorscale_negative_intensity(file_path):
     src = cv2.imread(file_path, cv2.IMREAD_COLOR)
 
@@ -49,15 +61,28 @@ def point_process_colorscale_negative_intensity(file_path):
             H[i][j] = rgb_hsi_conversion.rgb_to_hue(b, g, r)
             S[i][j] = rgb_hsi_conversion.rgb_to_saturity(b, g, r)
             I[i][j] = rgb_hsi_conversion.rgb_to_intensity(b, g, r)
-
-            I[i][j] = 1 - I[i][j]
+            # I[i][j] = 1. - I[i][j]
 
             bgr_tuple = rgb_hsi_conversion.HSI_to_bgr(H[i][j], S[i][j], I[i][j])
-            new_image[i][j][0] = bgr_tuple[0] * 255.
-            new_image[i][j][1] = bgr_tuple[1] * 255.
-            new_image[i][j][2] = bgr_tuple[2] * 255.
+
+            new_image[i][j][0] = round(bgr_tuple[0] * 255.)
+            new_image[i][j][1] = round(bgr_tuple[1] * 255.)
+            new_image[i][j][2] = round(bgr_tuple[2] * 255.)
 
     return new_image, src
+
+
+def show_colorscale_negative_intensity(window_name, file_path):
+    res = point_process_colorscale_negative_intensity(file_path)
+    util.compare_image(window_name, res[0], res[1])
+
+
+def show_colorscale_negative_intensity_result():
+    for i in range(len(color_image_tuple)):
+        show_colorscale_negative_intensity(color_image_tuple[i], PATH + color_image_tuple[i] + bmp)
+
+
+
 
 
 def point_process_grayscale_negative(file_path):
@@ -70,25 +95,6 @@ def point_process_grayscale_negative(file_path):
         for j in range(width):
             new_image[i][j] = 255 - src[i][j]
     return new_image, src
-
-
-def show_colorscale_negative_rgb(window_name, file_path):
-    res = point_process_colorscale_negative_rgb(file_path)
-    util.compare_image(window_name, res[0], res[1])
-
-
-def show_colorscale_negative_rgb_result():
-    for i in range(len(color_image_tuple)):
-        show_colorscale_negative_rgb(color_image_tuple[i], PATH + color_image_tuple[i] + bmp)
-
-
-def show_colorscale_negative_intensity(window_name, file_path):
-    res = point_process_colorscale_negative_intensity(file_path)
-    util.compare_image(window_name, res[0], res[1])
-
-def show_colorscale_negative_intensity_result():
-    for i in range(len(color_image_tuple)):
-        show_colorscale_negative_intensity(color_image_tuple[i], PATH + color_image_tuple[i] + bmp)
 
 
 def show_grayscale_negative(window_name, file_path):
@@ -106,6 +112,13 @@ def show_grayscale_negative_result():
     show_grayscale_negative("tank", "..\\image_enhancing\\test_images\\test_images\\tank.bmp")
     show_grayscale_negative("truck", "..\\image_enhancing\\test_images\\test_images\\truck.bmp")
     show_grayscale_negative("zelda", "..\\image_enhancing\\test_images\\test_images\\zelda.bmp")
+
+
+
+def calculate_grayscale_power_law(coefficient, input_px, gamma_value):
+    normalize_value = 255.0
+    s = coefficient * (input_px / normalize_value) ** float(gamma_value)
+    return s
 
 
 # need revision.
@@ -137,6 +150,20 @@ def point_process_colorscale_power_law_intensity(file_path, gamma_value):
     return new_image, src
 
 
+def show_colorscale_power_law_intensity(window_name, file_path):
+    res = point_process_colorscale_power_law_intensity(file_path)
+    util.compare_image(window_name, res[0], res[1])
+
+
+def show_colorscale_power_law_intensity_result():
+    for i in range(len(color_image_tuple)):
+        show_colorscale_negative_intensity(color_image_tuple[i], PATH + color_image_tuple[i] + bmp)
+
+
+
+
+
+
 def point_process_colorscale_power_law_rgb(file_path, gamma_value):
     src = cv2.imread(file_path, cv2.IMREAD_COLOR)
 
@@ -151,10 +178,18 @@ def point_process_colorscale_power_law_rgb(file_path, gamma_value):
     return new_image, src
 
 
-def calculate_grayscale_power_law(coefficient, input_px, gamma_value):
-    normalize_value = 255.0
-    s = coefficient * (input_px / normalize_value) ** float(gamma_value)
-    return s
+def show_colorscale_power_law_rgb(window_name, file_path, gamma_value):
+    res = point_process_colorscale_power_law_rgb(file_path, gamma_value)
+    util.compare_image(window_name, res[0], res[1])
+
+
+def show_colorscale_power_law_rgb_result():
+    for i in range(len(color_image_tuple)):
+        show_colorscale_power_law_rgb(color_image_tuple[i], PATH + color_image_tuple[i] + bmp, 0.4)
+
+
+
+
 
 
 def point_process_grayscale_power_law(file_path, gamma_value):
@@ -195,4 +230,5 @@ def show_grayscale_power_law_result():
 # show_grayscale_negative_result()
 # show_grayscale_power_law_result()
 # show_colorscale_negative_rgb_result()
-show_colorscale_negative_intensity_result()
+# show_colorscale_negative_intensity_result()
+show_colorscale_power_law_rgb_result()

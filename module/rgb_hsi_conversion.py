@@ -2,24 +2,23 @@ import cv2
 import numpy as np
 from math import acos, cos, pi, sqrt, radians, degrees
 
-
 def HSI_to_bgr(h, s, i):
     h = degrees(h)
     if 0 < h <= 120 :
         b = i * (1 - s)
-        r = i * (1 + (s * cos(h) / cos(60 - h)))
+        r = i * (1 + (s * cos(radians(h)) / cos(radians(60) - radians(h))))
         g = i * 3 - (r + b)
     elif 120 < h <= 240:
         h -= 120
         r = i * (1 - s)
-        g = i * (1 + (s * cos(h) / cos(60 - h)))
+        g = i * (1 + (s * cos(radians(h)) / cos(radians(60) - radians(h))))
         b = 3 * i - (r + g)
-    elif 240 < h <= 360:
+    elif 0 < h <= 360:
         h -= 240
         g = i * (1 - s)
-        b = i * (1 + (s * cos(h) / cos(60 - h)))
+        b = i * (1 + (s * cos(radians(h)) / cos(radians(60) - radians(h))))
         r = i * 3 - (g + b)
-    return b, g, r
+    return [b, g, r]
 
 
 def rgb_to_hue(b, g, r):
@@ -42,7 +41,7 @@ def rgb_to_intensity(b, g, r):
 
 def rgb_to_saturity(b, g, r):
     if r + g + b != 0:
-        return 1 - 3 * np.min([r, g, b]) / (r + g + b)
+        return 1. - 3. * np.min([r, g, b]) / (r + g + b)
     else:
         return 0
 
