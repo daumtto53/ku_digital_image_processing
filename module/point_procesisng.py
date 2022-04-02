@@ -2,6 +2,7 @@ import cv2
 import numpy as np
 import util
 import rgb_hsi_conversion
+import matplotlib.pyplot as plt
 from math import pi
 
 PATH = "..\\image_enhancing\\test_images\\test_images\\"
@@ -42,8 +43,6 @@ def show_colorscale_negative_rgb_result():
         show_colorscale_negative_rgb(color_image_tuple[i], PATH + color_image_tuple[i] + bmp)
 
 
-
-
 def point_process_colorscale_negative_intensity(file_path):
     src = cv2.imread(file_path, cv2.IMREAD_COLOR)
 
@@ -53,22 +52,24 @@ def point_process_colorscale_negative_intensity(file_path):
     S = np.zeros((height, width))
     H = np.zeros((height, width))
 
-    for i in range(height) :
-        for j in range(width) :
+    for i in range(height):
+        for j in range(width):
             b = src[i][j][0] / 255.
             g = src[i][j][1] / 255.
             r = src[i][j][2] / 255.
             H[i][j] = rgb_hsi_conversion.rgb_to_hue(b, g, r)
             S[i][j] = rgb_hsi_conversion.rgb_to_saturity(b, g, r)
             I[i][j] = rgb_hsi_conversion.rgb_to_intensity(b, g, r)
-            # I[i][j] = 1. - I[i][j]
+            I[i][j] = 1. - I[i][j]
 
             bgr_tuple = rgb_hsi_conversion.HSI_to_bgr(H[i][j], S[i][j], I[i][j])
 
-            new_image[i][j][0] = round(bgr_tuple[0] * 255.)
-            new_image[i][j][1] = round(bgr_tuple[1] * 255.)
-            new_image[i][j][2] = round(bgr_tuple[2] * 255.)
+            new_image[i][j][0] = np.clip(round(bgr_tuple[0] * 255.), 0, 255)
+            new_image[i][j][1] = np.clip(round(bgr_tuple[1] * 255.), 0, 255)
+            new_image[i][j][2] = np.clip(round(bgr_tuple[2] * 255.), 0, 255)
 
+    # cv2.imshow('abs diff*50', np.minimum(cv2.absdiff(src, new_image), 5) * 50)
+    # cv2.imshow('new_image', new_image)
     return new_image, src
 
 
@@ -80,9 +81,6 @@ def show_colorscale_negative_intensity(window_name, file_path):
 def show_colorscale_negative_intensity_result():
     for i in range(len(color_image_tuple)):
         show_colorscale_negative_intensity(color_image_tuple[i], PATH + color_image_tuple[i] + bmp)
-
-
-
 
 
 def point_process_grayscale_negative(file_path):
@@ -114,7 +112,6 @@ def show_grayscale_negative_result():
     show_grayscale_negative("zelda", "..\\image_enhancing\\test_images\\test_images\\zelda.bmp")
 
 
-
 def calculate_grayscale_power_law(coefficient, input_px, gamma_value):
     normalize_value = 255.0
     s = coefficient * (input_px / normalize_value) ** float(gamma_value)
@@ -131,8 +128,8 @@ def point_process_colorscale_power_law_intensity(file_path, gamma_value):
     S = np.zeros((height, width))
     H = np.zeros((height, width))
 
-    for i in range(height) :
-        for j in range(width) :
+    for i in range(height):
+        for j in range(width):
             b = src[i][j][0] / 255.
             g = src[i][j][1] / 255.
             r = src[i][j][2] / 255.
@@ -160,10 +157,6 @@ def show_colorscale_power_law_intensity_result():
         show_colorscale_negative_intensity(color_image_tuple[i], PATH + color_image_tuple[i] + bmp)
 
 
-
-
-
-
 def point_process_colorscale_power_law_rgb(file_path, gamma_value):
     src = cv2.imread(file_path, cv2.IMREAD_COLOR)
 
@@ -186,10 +179,6 @@ def show_colorscale_power_law_rgb(window_name, file_path, gamma_value):
 def show_colorscale_power_law_rgb_result():
     for i in range(len(color_image_tuple)):
         show_colorscale_power_law_rgb(color_image_tuple[i], PATH + color_image_tuple[i] + bmp, 0.4)
-
-
-
-
 
 
 def point_process_grayscale_power_law(file_path, gamma_value):
@@ -224,11 +213,80 @@ def show_grayscale_power_law_result():
     show_grayscale_power_law("zelda", "..\\image_enhancing\\test_images\\test_images\\zelda.bmp", power_law_value[0][0])
 
 
-# def point_process_histogram_
 
+
+# 나중에
+def point_process_grayscale_historgram_equalization(file_path):
+    src = cv2.imread(file_path, cv2.IMREAD_GRAYSCALE)
+    return histeq(src)
+
+
+def show_grayscale_histogram_eqaulization(window_name, file_path):
+    new_image, org_hist, new_hist, hist_func = point_process_grayscale_historgram_equalization(file_path)
+    src = cv2.imread(file_path, cv2.IMREAD_GRAYSCALE)
+    # show_histogram()
+    # plt.plot(org_hist)
+    # plt.show()
+    # plt.plot(new_hist)
+    # plt.show()
+
+    # plot histograms and transfer function
+    fig = plt.figure()
+    fig.add_subplot(221)
+    plt.plot(org_hist)
+    plt.title('Original histogram')  # original histogram
+
+    fig.add_subplot(222)
+    plt.plot(new_hist)
+    plt.title('New histogram')  # hist of eqlauized image
+
+    plt.show()
+
+
+    util.compare_image(window_name, new_image, src)
+
+def show_grayscale_histogram_equalization_result():
+    for i in range(len(grayscale_image_tuple)):
+        show_grayscale_histogram_eqaulization(grayscale_image_tuple[i], PATH + grayscale_image_tuple[i] + bmp)
+
+
+
+def imhist(im):
+    # calculates normalized histogram of an image
+    m, n = im.shape
+    h = [0.0] * 256
+    for i in range(m):
+        for j in range(n):
+            h[im[i, j]] += 1
+    return np.array(h) / (m * n)
+
+
+def cumsum(h):
+    # finds cumulative sum of a numpy array, list
+    return [sum(h[:i + 1]) for i in range(len(h))]
+
+
+def histeq(im):
+    # calculate Histogram
+    h = imhist(im)
+    cdf = np.array(cumsum(h))  # cumulative distribution function
+    sk = np.uint8(255 * cdf)  # finding transfer function values
+    s1, s2 = im.shape
+    Y = np.zeros_like(im)
+    for i in range(0, s1):
+        for j in range(0, s2):
+            Y[i, j] = sk[im[i, j]]
+    H = imhist(Y)
+    # return transformed image, original and new istogram,
+    # and transform function
+    return Y, h, H, sk
+
+# def point_process_histogram_
 
 # show_grayscale_negative_result()
 # show_grayscale_power_law_result()
 # show_colorscale_negative_rgb_result()
 # show_colorscale_negative_intensity_result()
-show_colorscale_power_law_rgb_result()
+# show_colorscale_power_law_rgb_result()
+# show_colorscale_power_law_intensity_result()
+# show_grayscale_histogram_equalization_result()

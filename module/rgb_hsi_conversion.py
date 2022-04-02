@@ -3,8 +3,11 @@ import numpy as np
 from math import acos, cos, pi, sqrt, radians, degrees
 
 def HSI_to_bgr(h, s, i):
+    b = 0.
+    g = 0.
+    r = 0.
     h = degrees(h)
-    if 0 < h <= 120 :
+    if 0 <= h <= 120 :
         b = i * (1 - s)
         r = i * (1 + (s * cos(radians(h)) / cos(radians(60) - radians(h))))
         g = i * 3 - (r + b)
@@ -18,13 +21,14 @@ def HSI_to_bgr(h, s, i):
         g = i * (1 - s)
         b = i * (1 + (s * cos(radians(h)) / cos(radians(60) - radians(h))))
         r = i * 3 - (g + b)
-    return [b, g, r]
+    return b, g, r
 
 
 def rgb_to_hue(b, g, r):
-    angle = 0
-    if b != g != r:
-        angle = 0.5 * ((r - g) + (r - b)) / sqrt(((r - g) ** 2) + (r - b) * (g - b))
+    if b == g == r:
+        return 0
+
+    angle = 0.5 * ((r - g) + (r - b)) / sqrt(((r - g) ** 2) + (r - b) * (g - b))
     if b <= g:
         return acos(angle)
     else:
