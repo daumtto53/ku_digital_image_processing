@@ -157,17 +157,26 @@ def show_colorscale_power_law_intensity(window_name, file_path, gamma_value):
 
 
 def show_colorscale_power_law_intensity_result():
-    show_colorscale_power_law_intensity("BoatsColor.bmp", "..\\image_enhancing\\test_images\\test_images\\BoatsColor.bmp", power_law_value[0][0])
+    show_colorscale_power_law_intensity("BoatsColor.bmp",
+                                        "..\\image_enhancing\\test_images\\test_images\\BoatsColor.bmp",
+                                        power_law_value[0][0])
     show_colorscale_power_law_intensity("airplane", "..\\image_enhancing\\test_images\\test_images\\airplane.bmp",
-                             power_law_value[0][1])
+                                        power_law_value[0][1])
     show_colorscale_power_law_intensity("baboon", "..\\image_enhancing\\test_images\\test_images\\baboon.bmp",
-                             power_law_value[0][1])
-    show_colorscale_power_law_intensity("barara", "..\\image_enhancing\\test_images\\test_images\\barbara.bmp", power_law_value[0][0])
-    show_colorscale_power_law_intensity("boy", "..\\image_enhancing\\test_images\\test_images\\boy.bmp", power_law_value[0][0])
-    show_colorscale_power_law_intensity("goldhill", "..\\image_enhancing\\test_images\\test_images\\goldhill.bmp", power_law_value[0][0])
-    show_colorscale_power_law_intensity("lenna_color", "..\\image_enhancing\\test_images\\test_images\\lenna_color.bmp", power_law_value[0][1])
-    show_colorscale_power_law_intensity("pepper", "..\\image_enhancing\\test_images\\test_images\\pepper.bmp", power_law_value[0][1])
-    show_colorscale_power_law_intensity("sails", "..\\image_enhancing\\test_images\\test_images\\sails.bmp", power_law_value[0][0])
+                                        power_law_value[0][1])
+    show_colorscale_power_law_intensity("barara", "..\\image_enhancing\\test_images\\test_images\\barbara.bmp",
+                                        power_law_value[0][0])
+    show_colorscale_power_law_intensity("boy", "..\\image_enhancing\\test_images\\test_images\\boy.bmp",
+                                        power_law_value[0][0])
+    show_colorscale_power_law_intensity("goldhill", "..\\image_enhancing\\test_images\\test_images\\goldhill.bmp",
+                                        power_law_value[0][0])
+    show_colorscale_power_law_intensity("lenna_color", "..\\image_enhancing\\test_images\\test_images\\lenna_color.bmp",
+                                        power_law_value[0][1])
+    show_colorscale_power_law_intensity("pepper", "..\\image_enhancing\\test_images\\test_images\\pepper.bmp",
+                                        power_law_value[0][1])
+    show_colorscale_power_law_intensity("sails", "..\\image_enhancing\\test_images\\test_images\\sails.bmp",
+                                        power_law_value[0][0])
+
 
 def point_process_colorscale_power_law_rgb(file_path, gamma_value):
     src = cv2.imread(file_path, cv2.IMREAD_COLOR)
@@ -226,8 +235,6 @@ def show_grayscale_power_law_result():
     show_grayscale_power_law("zelda", "..\\image_enhancing\\test_images\\test_images\\zelda.bmp", power_law_value[1][0])
 
 
-
-
 def point_process_grayscale_historgram_equalization(file_path):
     src = cv2.imread(file_path, cv2.IMREAD_GRAYSCALE)
     return histeq(src)
@@ -254,8 +261,8 @@ def show_grayscale_histogram_eqaulization(window_name, file_path):
 
     plt.show()
 
-
     util.compare_image(window_name, new_image, src)
+
 
 def show_grayscale_histogram_equalization_result():
     for i in range(len(grayscale_image_tuple)):
@@ -272,24 +279,63 @@ def show_colorscale_histogram_equalization_rgb_result():
 
 
 def show_colorscale_histogram_equalization_rgb(window_name, file_path):
+    tuple, new_image = point_process_colorscale_histogram_equalization_rgb(file_path)
+    b_tuple, g_tuple, r_tuple = tuple
+    y_b, h_b, H_b = b_tuple[0], b_tuple[1], b_tuple[2]
+    y_g, h_g, H_g = g_tuple[0], g_tuple[1], g_tuple[2]
+    y_r, h_r, H_r = r_tuple[0], r_tuple[1], r_tuple[2]
+    src = cv2.imread(file_path, cv2.IMREAD_COLOR)
+
+    fig, axes = plt.subplots(3, 2)
+    fig.set_size_inches((20, 15))
+    plt.subplots_adjust(wspace=0.3, hspace=0.3)
+
+    axes[0,0].plot(h_b)
+    axes[0,0].set_title('b_original')  # original histogram
+    axes[0,1].plot(H_b)
+    axes[0,1].set_title('b_new')  # hist of eqlauized image
+
+    axes[1, 0].plot(h_g)
+    axes[1, 0].set_title('g_original')  # original histogram
+    axes[1, 1].plot(H_g)
+    axes[1, 1].set_title('g_new')  # hist of eqlauized image
+
+    axes[2, 0].plot(h_r)
+    axes[2, 0].set_title('r_original')  # original histogram
+    axes[2, 1].plot(H_r)
+    axes[2, 1].set_title('r_new')  # hist of eqlauized image
+
+    plt.show()
+
+    util.compare_image(window_name, new_image, src)
     return;
 
 
-
 def point_process_colorscale_histogram_equalization_rgb(file_path):
-
     src = cv2.imread(file_path, cv2.IMREAD_COLOR)
 
     height, width = src.shape[0], src.shape[1]
     new_image = np.zeros((height, width, 3), dtype=np.uint8)
+    new_image_b = np.zeros((height, width), dtype=np.uint8)
+    new_image_g = np.zeros((height, width), dtype=np.uint8)
+    new_image_r = np.zeros((height, width), dtype=np.uint8)
 
     # rgb 각각의 영역에 대해 Histogram Eqaulization 필요.
+    for i in range(height):
+        for j in range(width):
+            new_image_b[i][j] = src[i][j][0]
+            new_image_g[i][j] = src[i][j][1]
+            new_image_r[i][j] = src[i][j][2]
 
-    histeq_result_bgr = []
-    histeq_result_bgr.append(histeq())
-    return new_image, src
+    histeq_result_bgr = [histeq(new_image_b), histeq(new_image_g), histeq(new_image_r)]
+    histeq_b, histeq_g, histeq_r = histeq_result_bgr[0], histeq_result_bgr[1], histeq_result_bgr[2]
+    for i in range(height):
+        for j in range(width):
+            new_image[i][j][0] = histeq_b[0][i][j]
+            new_image[i][j][1] = histeq_g[0][i][j]
+            new_image[i][j][2] = histeq_r[0][i][j]
 
-
+    return histeq_result_bgr, new_image
 
 
 def imhist(im):
@@ -298,7 +344,7 @@ def imhist(im):
     h = [0.0] * 256
     for i in range(m):
         for j in range(n):
-            h[im[i, j]] += 1
+            h[im[i][j]] += 1
     return np.array(h) / (m * n)
 
 
@@ -321,6 +367,7 @@ def histeq(im):
     # return val : Y;new_image, h;org_hist, H:new_hist, hist_func
     return Y, h, H, sk
 
+
 # def point_process_histogram_
 
 # show_grayscale_negative_result()
@@ -332,3 +379,4 @@ def histeq(im):
 # show_colorscale_power_law_intensity_result()
 
 # show_grayscale_histogram_equalization_result()
+# show_colorscale_histogram_equalization_rgb_result()
