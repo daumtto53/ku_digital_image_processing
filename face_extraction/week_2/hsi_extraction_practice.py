@@ -64,7 +64,7 @@ def extract_skin_color(file_path):
     for i in range(height):
         for j in range(width):
             if (H[i][j] >= 0.05 and H[i][j] <= 0.8) and \
-                    (S[i][j] >= 0.10 and S[i][j] <= 0.90) and \
+                    (S[i][j] >= 0.3 and S[i][j] <= 0.90) and \
                     (I[i][j] >= 0.30 and I[i][j] <= 0.90) :
                 dst[i][j] = src[i][j]
 
@@ -140,18 +140,10 @@ def extract_skin_color(file_path):
 # cv2.destroyAllWindows()
 
 
-extract_skin_color("skin_color_example\\black_male_1.jpg")
-extract_skin_color("skin_color_example\\black_male_2.jpg")
-extract_skin_color("skin_color_example\\black_male_3.jpg")
-extract_skin_color("skin_color_example\\black_male_4.jpg")
-extract_skin_color("skin_color_example\\black_male_5.jpg")
-extract_skin_color("skin_color_example\\white_male_1.jpg")
-extract_skin_color("skin_color_example\\white_male_2.jpg")
-extract_skin_color("skin_color_example\\white_male_3.jpg")
-extract_skin_color("skin_color_example\\white_male_4.jpg")
-extract_skin_color("skin_color_example\\white_male_5.png")
-extract_skin_color("skin_color_example\\yellow_male_1.jpg")
-# extract_skin_color("skin_color_example\\yellow_male_2.jpg")   //no image
-extract_skin_color("skin_color_example\\yellow_male_3.jpg")
-extract_skin_color("skin_color_example\\face_paint_1.jpg")
+extract_skin_color("skin_color_example\\male_1.jpg")
+extract_skin_color("skin_color_example\\male_2.jpg")
+extract_skin_color("skin_color_example\\male_3.jpg")
+extract_skin_color("skin_color_example\\male_4.jpg")
+extract_skin_color("skin_color_example\\male_5.jpg")
+extract_skin_color("skin_color_example\\male_6.jpg")
 

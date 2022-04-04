@@ -39,14 +39,14 @@ for i in range(height):
         if B + G +R != 0 :
             S[i][j] = 1 - 3 * np.min([R, G, B]/[R + G + B])
         H[i][j]
-        
+
 dest = np.zeros((height, width, 3), dtype=np.uint8)
 
 for i in range(height) :
     for j in range(width) : 
             if H[i][j] >= 0.25 and H[i][j] <= 0.6 :
                 dest[i][j] = src[i][j]
-                
+
 cv2.imshow('dst', dest)
 cv2.imshow('src', src)
 cv2.waitKey(0)
@@ -113,11 +113,7 @@ cv2.destroyAllWindows()
 
 ## OpenCV
 
-
-
 ### imread
-
-
 
 ### **Image Dimension**
 

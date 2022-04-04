@@ -140,7 +140,8 @@ def point_process_colorscale_power_law_intensity(file_path, gamma_value):
             S[i][j] = rgb_hsi_conversion.rgb_to_saturity(b, g, r)
             I[i][j] = rgb_hsi_conversion.rgb_to_intensity(b, g, r)
 
-            I[i][j] = calculate_grayscale_power_law(255, I[i][j], gamma_value)
+
+            I[i][j] = calculate_grayscale_power_law(255, I[i][j] * 255., gamma_value) / 255.
 
             bgr_tuple = rgb_hsi_conversion.HSI_to_bgr(H[i][j], S[i][j], I[i][j])
 
@@ -177,6 +178,26 @@ def show_colorscale_power_law_intensity_result():
     show_colorscale_power_law_intensity("sails", "..\\image_enhancing\\test_images\\test_images\\sails.bmp",
                                         power_law_value[0][0])
 
+    show_colorscale_power_law_intensity("BoatsColor.bmp",
+                                        "..\\image_enhancing\\test_images\\test_images\\BoatsColor.bmp",
+                                        power_law_value[1][0])
+    show_colorscale_power_law_intensity("airplane", "..\\image_enhancing\\test_images\\test_images\\airplane.bmp",
+                                        power_law_value[1][1])
+    show_colorscale_power_law_intensity("baboon", "..\\image_enhancing\\test_images\\test_images\\baboon.bmp",
+                                        power_law_value[1][1])
+    show_colorscale_power_law_intensity("barara", "..\\image_enhancing\\test_images\\test_images\\barbara.bmp",
+                                        power_law_value[1][0])
+    show_colorscale_power_law_intensity("boy", "..\\image_enhancing\\test_images\\test_images\\boy.bmp",
+                                        power_law_value[1][0])
+    show_colorscale_power_law_intensity("goldhill", "..\\image_enhancing\\test_images\\test_images\\goldhill.bmp",
+                                        power_law_value[1][0])
+    show_colorscale_power_law_intensity("lenna_color", "..\\image_enhancing\\test_images\\test_images\\lenna_color.bmp",
+                                        power_law_value[1][1])
+    show_colorscale_power_law_intensity("pepper", "..\\image_enhancing\\test_images\\test_images\\pepper.bmp",
+                                        power_law_value[1][1])
+    show_colorscale_power_law_intensity("sails", "..\\image_enhancing\\test_images\\test_images\\sails.bmp",
+                                        power_law_value[1][0])
+
 
 def point_process_colorscale_power_law_rgb(file_path, gamma_value):
     src = cv2.imread(file_path, cv2.IMREAD_COLOR)
@@ -198,8 +219,45 @@ def show_colorscale_power_law_rgb(window_name, file_path, gamma_value):
 
 
 def show_colorscale_power_law_rgb_result():
-    for i in range(len(color_image_tuple)):
-        show_colorscale_power_law_rgb(color_image_tuple[i], PATH + color_image_tuple[i] + bmp, 0.4)
+    # show_colorscale_power_law_intensity("BoatsColor.bmp",
+    #                                     "..\\image_enhancing\\test_images\\test_images\\BoatsColor.bmp",
+    #                                     power_law_value[0][0])
+    # show_colorscale_power_law_rgb("airplane", "..\\image_enhancing\\test_images\\test_images\\airplane.bmp",
+    #                                     power_law_value[0][1])
+    # show_colorscale_power_law_rgb("baboon", "..\\image_enhancing\\test_images\\test_images\\baboon.bmp",
+    #                                     power_law_value[0][1])
+    # show_colorscale_power_law_rgb("barara", "..\\image_enhancing\\test_images\\test_images\\barbara.bmp",
+    #                                     power_law_value[0][0])
+    # show_colorscale_power_law_rgb("boy", "..\\image_enhancing\\test_images\\test_images\\boy.bmp",
+    #                                     power_law_value[0][0])
+    # show_colorscale_power_law_rgb("goldhill", "..\\image_enhancing\\test_images\\test_images\\goldhill.bmp",
+    #                                     power_law_value[0][0])
+    # show_colorscale_power_law_rgb("lenna_color", "..\\image_enhancing\\test_images\\test_images\\lenna_color.bmp",
+    #                                     power_law_value[0][1])
+    # show_colorscale_power_law_rgb("pepper", "..\\image_enhancing\\test_images\\test_images\\pepper.bmp",
+    #                                     power_law_value[0][1])
+    # show_colorscale_power_law_rgb("sails", "..\\image_enhancing\\test_images\\test_images\\sails.bmp",
+    #                                     power_law_value[0][0])
+
+    show_colorscale_power_law_rgb("BoatsColor.bmp",
+                                        "..\\image_enhancing\\test_images\\test_images\\BoatsColor.bmp",
+                                        power_law_value[1][0])
+    show_colorscale_power_law_rgb("airplane", "..\\image_enhancing\\test_images\\test_images\\airplane.bmp",
+                                        power_law_value[1][1])
+    show_colorscale_power_law_rgb("baboon", "..\\image_enhancing\\test_images\\test_images\\baboon.bmp",
+                                        power_law_value[1][1])
+    show_colorscale_power_law_rgb("barara", "..\\image_enhancing\\test_images\\test_images\\barbara.bmp",
+                                        power_law_value[1][0])
+    show_colorscale_power_law_rgb("boy", "..\\image_enhancing\\test_images\\test_images\\boy.bmp",
+                                        power_law_value[1][0])
+    show_colorscale_power_law_rgb("goldhill", "..\\image_enhancing\\test_images\\test_images\\goldhill.bmp",
+                                        power_law_value[1][0])
+    show_colorscale_power_law_rgb("lenna_color", "..\\image_enhancing\\test_images\\test_images\\lenna_color.bmp",
+                                        power_law_value[1][1])
+    show_colorscale_power_law_rgb("pepper", "..\\image_enhancing\\test_images\\test_images\\pepper.bmp",
+                                        power_law_value[1][1])
+    show_colorscale_power_law_rgb("sails", "..\\image_enhancing\\test_images\\test_images\\sails.bmp",
+                                        power_law_value[1][0])
 
 
 def point_process_grayscale_power_law(file_path, gamma_value):
@@ -235,6 +293,8 @@ def show_grayscale_power_law_result():
     show_grayscale_power_law("zelda", "..\\image_enhancing\\test_images\\test_images\\zelda.bmp", power_law_value[1][0])
 
 
+
+# H_E
 def point_process_grayscale_historgram_equalization(file_path):
     src = cv2.imread(file_path, cv2.IMREAD_GRAYSCALE)
     return histeq(src)
@@ -267,12 +327,9 @@ def show_grayscale_histogram_eqaulization(window_name, file_path):
 def show_grayscale_histogram_equalization_result():
     for i in range(len(grayscale_image_tuple)):
         show_grayscale_histogram_eqaulization(grayscale_image_tuple[i], PATH + grayscale_image_tuple[i] + bmp)
+# H_E END
 
-
-
-
-
-
+# H_E RGB
 def show_colorscale_histogram_equalization_rgb_result():
     for i in range(len(color_image_tuple)):
         show_colorscale_histogram_equalization_rgb(color_image_tuple[i], PATH + color_image_tuple[i] + bmp)
@@ -336,6 +393,67 @@ def point_process_colorscale_histogram_equalization_rgb(file_path):
             new_image[i][j][2] = histeq_r[0][i][j]
 
     return histeq_result_bgr, new_image
+# H_E RGB END
+
+
+# H_E INTENSITY
+def point_process_colorscale_histogram_equalization_intensity(file_path):
+    src = cv2.imread(file_path, cv2.IMREAD_COLOR)
+
+    height, width = src.shape[0], src.shape[1]
+    new_image = np.zeros((height, width, 3), dtype=np.uint8)
+    I = np.zeros((height, width))
+    S = np.zeros((height, width))
+    H = np.zeros((height, width))
+
+    for i in range(height):
+        for j in range(width):
+            b = src[i][j][0] / 255.
+            g = src[i][j][1] / 255.
+            r = src[i][j][2] / 255.
+            H[i][j] = rgb_hsi_conversion.rgb_to_hue(b, g, r)
+            S[i][j] = rgb_hsi_conversion.rgb_to_saturity(b, g, r)
+            I[i][j] = rgb_hsi_conversion.rgb_to_intensity(b, g, r)
+
+    denormalized_I = (I * 255).astype(int)
+    new_I_tuple = histeq(denormalized_I)
+    new_I_image = new_I_tuple[0] / 255.
+
+    for i in range(height):
+        for j in range(width):
+            bgr_tuple = rgb_hsi_conversion.HSI_to_bgr(H[i][j], S[i][j], new_I_image[i][j])
+
+            new_image[i][j][0] = np.clip(round(bgr_tuple[0] * 255.), 0, 255)
+            new_image[i][j][1] = np.clip(round(bgr_tuple[1] * 255.), 0, 255)
+            new_image[i][j][2] = np.clip(round(bgr_tuple[2] * 255.), 0, 255)
+
+    return  new_I_tuple, new_image
+
+
+def show_colorscale_histogram_eqaulization_intensity(window_name, file_path):
+    new_I_tuple, new_image = point_process_colorscale_histogram_equalization_intensity(file_path)
+    src = cv2.imread(file_path, cv2.IMREAD_COLOR)
+    new_I_image, I_histogram, new_I_histogram, func = new_I_tuple
+    # plot histograms and transfer function
+    fig = plt.figure()
+    fig.add_subplot(221)
+    plt.plot(I_histogram)
+    plt.title('Original histogram')  # original histogram
+
+    fig.add_subplot(222)
+    plt.plot(new_I_histogram)
+    plt.title('New histogram')  # hist of eqlauized image
+
+    plt.show()
+    util.compare_image(window_name, new_image, src)
+
+
+def show_colorscale_histogram_equalization_intensity_result():
+    for i in range(len(color_image_tuple)):
+        show_colorscale_histogram_eqaulization_intensity(color_image_tuple[i], PATH + color_image_tuple[i] + bmp)
+# H_E INTENSITY END
+
+
 
 
 def imhist(im):
@@ -380,3 +498,4 @@ def histeq(im):
 
 # show_grayscale_histogram_equalization_result()
 # show_colorscale_histogram_equalization_rgb_result()
+show_colorscale_histogram_equalization_intensity_result()
