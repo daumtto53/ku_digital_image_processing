@@ -158,13 +158,13 @@ def show_colorscale_power_law_intensity(window_name, file_path, gamma_value):
 
 
 def show_colorscale_power_law_intensity_result():
-    show_colorscale_power_law_intensity("BoatsColor.bmp",
-                                        "..\\image_enhancing\\test_images\\test_images\\BoatsColor.bmp",
-                                        power_law_value[0][0])
-    show_colorscale_power_law_intensity("airplane", "..\\image_enhancing\\test_images\\test_images\\airplane.bmp",
-                                        power_law_value[0][1])
-    show_colorscale_power_law_intensity("baboon", "..\\image_enhancing\\test_images\\test_images\\baboon.bmp",
-                                        power_law_value[0][1])
+    # show_colorscale_power_law_intensity("BoatsColor.bmp",
+    #                                     "..\\image_enhancing\\test_images\\test_images\\BoatsColor.bmp",
+    #                                     power_law_value[0][0])
+    # show_colorscale_power_law_intensity("airplane", "..\\image_enhancing\\test_images\\test_images\\airplane.bmp",
+    #                                     power_law_value[0][1])
+    # show_colorscale_power_law_intensity("baboon", "..\\image_enhancing\\test_images\\test_images\\baboon.bmp",
+    #                                     power_law_value[0][1])
     show_colorscale_power_law_intensity("barara", "..\\image_enhancing\\test_images\\test_images\\barbara.bmp",
                                         power_law_value[0][0])
     show_colorscale_power_law_intensity("boy", "..\\image_enhancing\\test_images\\test_images\\boy.bmp",
@@ -177,25 +177,25 @@ def show_colorscale_power_law_intensity_result():
                                         power_law_value[0][1])
     show_colorscale_power_law_intensity("sails", "..\\image_enhancing\\test_images\\test_images\\sails.bmp",
                                         power_law_value[0][0])
-
-    show_colorscale_power_law_intensity("BoatsColor.bmp",
-                                        "..\\image_enhancing\\test_images\\test_images\\BoatsColor.bmp",
+    #
+    # show_colorscale_power_law_intensity("BoatsColor.bmp",
+    #                                     "..\\image_enhancing\\test_images\\test_images\\BoatsColor.bmp",
+    #                                     power_law_value[1][0])
+    # show_colorscale_power_law_intensity("airplane", "..\\image_enhancing\\test_images\\test_images\\airplane.bmp",
+    #                                     power_law_value[1][1])
+    # show_colorscale_power_law_intensity("baboon", "..\\image_enhancing\\test_images\\test_images\\baboon.bmp",
+    #                                     power_law_value[1][1])
+    show_colorscale_power_law_intensity("barara_1", "..\\image_enhancing\\test_images\\test_images\\barbara.bmp",
                                         power_law_value[1][0])
-    show_colorscale_power_law_intensity("airplane", "..\\image_enhancing\\test_images\\test_images\\airplane.bmp",
-                                        power_law_value[1][1])
-    show_colorscale_power_law_intensity("baboon", "..\\image_enhancing\\test_images\\test_images\\baboon.bmp",
-                                        power_law_value[1][1])
-    show_colorscale_power_law_intensity("barara", "..\\image_enhancing\\test_images\\test_images\\barbara.bmp",
+    show_colorscale_power_law_intensity("boy_1", "..\\image_enhancing\\test_images\\test_images\\boy.bmp",
                                         power_law_value[1][0])
-    show_colorscale_power_law_intensity("boy", "..\\image_enhancing\\test_images\\test_images\\boy.bmp",
+    show_colorscale_power_law_intensity("goldhill_1", "..\\image_enhancing\\test_images\\test_images\\goldhill.bmp",
                                         power_law_value[1][0])
-    show_colorscale_power_law_intensity("goldhill", "..\\image_enhancing\\test_images\\test_images\\goldhill.bmp",
-                                        power_law_value[1][0])
-    show_colorscale_power_law_intensity("lenna_color", "..\\image_enhancing\\test_images\\test_images\\lenna_color.bmp",
+    show_colorscale_power_law_intensity("lenna_color_1", "..\\image_enhancing\\test_images\\test_images\\lenna_color.bmp",
                                         power_law_value[1][1])
-    show_colorscale_power_law_intensity("pepper", "..\\image_enhancing\\test_images\\test_images\\pepper.bmp",
-                                        power_law_value[1][1])
-    show_colorscale_power_law_intensity("sails", "..\\image_enhancing\\test_images\\test_images\\sails.bmp",
+    # show_colorscale_power_law_intensity("pepper", "..\\image_enhancing\\test_images\\test_images\\pepper.bmp",
+    #                                     power_law_value[1][1])
+    show_colorscale_power_law_intensity("sails_1", "..\\image_enhancing\\test_images\\test_images\\sails.bmp",
                                         power_law_value[1][0])
 
 
@@ -219,25 +219,25 @@ def show_colorscale_power_law_rgb(window_name, file_path, gamma_value):
 
 
 def show_colorscale_power_law_rgb_result():
-    # show_colorscale_power_law_intensity("BoatsColor.bmp",
-    #                                     "..\\image_enhancing\\test_images\\test_images\\BoatsColor.bmp",
-    #                                     power_law_value[0][0])
-    # show_colorscale_power_law_rgb("airplane", "..\\image_enhancing\\test_images\\test_images\\airplane.bmp",
-    #                                     power_law_value[0][1])
-    # show_colorscale_power_law_rgb("baboon", "..\\image_enhancing\\test_images\\test_images\\baboon.bmp",
-    #                                     power_law_value[0][1])
-    # show_colorscale_power_law_rgb("barara", "..\\image_enhancing\\test_images\\test_images\\barbara.bmp",
-    #                                     power_law_value[0][0])
-    # show_colorscale_power_law_rgb("boy", "..\\image_enhancing\\test_images\\test_images\\boy.bmp",
-    #                                     power_law_value[0][0])
-    # show_colorscale_power_law_rgb("goldhill", "..\\image_enhancing\\test_images\\test_images\\goldhill.bmp",
-    #                                     power_law_value[0][0])
-    # show_colorscale_power_law_rgb("lenna_color", "..\\image_enhancing\\test_images\\test_images\\lenna_color.bmp",
-    #                                     power_law_value[0][1])
-    # show_colorscale_power_law_rgb("pepper", "..\\image_enhancing\\test_images\\test_images\\pepper.bmp",
-    #                                     power_law_value[0][1])
-    # show_colorscale_power_law_rgb("sails", "..\\image_enhancing\\test_images\\test_images\\sails.bmp",
-    #                                     power_law_value[0][0])
+    show_colorscale_power_law_intensity("BoatsColor.bmp",
+                                        "..\\image_enhancing\\test_images\\test_images\\BoatsColor.bmp",
+                                        power_law_value[0][0])
+    show_colorscale_power_law_rgb("airplane", "..\\image_enhancing\\test_images\\test_images\\airplane.bmp",
+                                        power_law_value[0][1])
+    show_colorscale_power_law_rgb("baboon", "..\\image_enhancing\\test_images\\test_images\\baboon.bmp",
+                                        power_law_value[0][1])
+    show_colorscale_power_law_rgb("barara", "..\\image_enhancing\\test_images\\test_images\\barbara.bmp",
+                                        power_law_value[0][0])
+    show_colorscale_power_law_rgb("boy", "..\\image_enhancing\\test_images\\test_images\\boy.bmp",
+                                        power_law_value[0][0])
+    show_colorscale_power_law_rgb("goldhill", "..\\image_enhancing\\test_images\\test_images\\goldhill.bmp",
+                                        power_law_value[0][0])
+    show_colorscale_power_law_rgb("lenna_color", "..\\image_enhancing\\test_images\\test_images\\lenna_color.bmp",
+                                        power_law_value[0][1])
+    show_colorscale_power_law_rgb("pepper", "..\\image_enhancing\\test_images\\test_images\\pepper.bmp",
+                                        power_law_value[0][1])
+    show_colorscale_power_law_rgb("sails", "..\\image_enhancing\\test_images\\test_images\\sails.bmp",
+                                        power_law_value[0][0])
 
     show_colorscale_power_law_rgb("BoatsColor.bmp",
                                         "..\\image_enhancing\\test_images\\test_images\\BoatsColor.bmp",
@@ -313,11 +313,11 @@ def show_grayscale_histogram_eqaulization(window_name, file_path):
     fig = plt.figure()
     fig.add_subplot(221)
     plt.plot(org_hist)
-    plt.title('Original histogram')  # original histogram
+    plt.title('O_' + window_name)  # original histogram
 
     fig.add_subplot(222)
     plt.plot(new_hist)
-    plt.title('New histogram')  # hist of eqlauized image
+    plt.title('N_' + window_name)  # hist of eqlauized image
 
     plt.show()
 
@@ -327,6 +327,12 @@ def show_grayscale_histogram_eqaulization(window_name, file_path):
 def show_grayscale_histogram_equalization_result():
     for i in range(len(grayscale_image_tuple)):
         show_grayscale_histogram_eqaulization(grayscale_image_tuple[i], PATH + grayscale_image_tuple[i] + bmp)
+
+def show_grayscale_histogram_equalization_result_2():
+    show_grayscale_histogram_eqaulization('1', '..\\image_enhancing\\HE test\\1.jpg')
+    show_grayscale_histogram_eqaulization('1', '..\\image_enhancing\\HE test\\2.jpg')
+    show_grayscale_histogram_eqaulization('1', '..\\image_enhancing\\HE test\\3.jpg')
+    show_grayscale_histogram_eqaulization('1', '..\\image_enhancing\\HE test\\4.jpg')
 # H_E END
 
 # H_E RGB
@@ -496,6 +502,11 @@ def histeq(im):
 # show_colorscale_power_law_rgb_result()
 # show_colorscale_power_law_intensity_result()
 
+
 # show_grayscale_histogram_equalization_result()
 # show_colorscale_histogram_equalization_rgb_result()
 show_colorscale_histogram_equalization_intensity_result()
+# show_grayscale_histogram_equalization_result_2()
+
+cv2.waitKey()
+cv2.destroyAllWindows()
