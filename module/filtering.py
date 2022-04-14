@@ -32,7 +32,7 @@ def define_mean_kernel(size):
 
 def gaussian_calculator(u, v, sigma):
     denominator = 2 * pi * (sigma * sigma)
-    numerator = np.exp(-1 * (u*u + v*v) / (sigma*sigma))
+    numerator = np.exp(-1 * (u*u + v*v) / (2 * sigma*sigma))
     return numerator / denominator
 
 
