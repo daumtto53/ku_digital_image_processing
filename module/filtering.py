@@ -11,7 +11,7 @@ def apply_kernel(u, v, kernel, kernel_height, kernel_width, old_image, new_image
     for i in range(-1 * offset_h, offset_h + 1) :
         for j in range(-1 * offset_w, offset_w + 1) :
             new_value = new_value + (old_image[u + i][v + j] * kernel[offset_h + i][offset_w + j])
-    new_image[u][v] = new_value
+    new_image[u][v] = int(new_value) # float to int
 
 
 def find_possible_border(height, width, kernel_height, kernel_width):
@@ -31,17 +31,19 @@ def define_mean_kernel(size):
 
 
 def gaussian_calculator(u, v, sigma):
-    denominator = 2 * pi * (sigma ** 2)
-    numerator = np.exp(-1 * (u**2 + v**2) / sigma**2)
+    denominator = 2 * pi * (sigma * sigma)
+    numerator = np.exp(-1 * (u*u + v*v) / (sigma*sigma))
     return numerator / denominator
 
 
 def define_gaussian_kernel(size, sigma):
     gaussian_kernel = np.zeros((size,size), dtype=float)
+    offset = int(size / 2)
 
     for i in range(size):
         for j in range(size):
-            gaussian_kernel[i][j] = gaussian_calculator(i, j, sigma)
+            gaussian_kernel[i][j] = gaussian_calculator(i - offset, j - offset, sigma)
+            print(i - offset, j- offset)
     return gaussian_kernel
 
 
@@ -53,6 +55,38 @@ def filtering(height, width, kernel, old_image, new_image) :
         for j in range(offset_w, width - offset_w):
             apply_kernel(i, j, kernel, kernel_height, kernel_width, old_image, new_image)
 
+def mean_filtering(file_path, kernel_size):
+    src = cv2.imread(file_path, cv2.IMREAD_GRAYSCALE)
 
-new = define_gaussian_kernel(3, 1)
-print(new)
+    mean_kernel = define_mean_kernel(kernel_size)
+    height, width = src.shape[0],src.shape[1]
+    new_image = np.zeros((height,width), dtype=np.uint8)
+    filtering(height, width, mean_kernel, src, new_image)
+    util.compare_image("mean", new_image, src)
+
+def gaussian_fltering(file_path, kernel_size, sigma):
+    src = cv2.imread(file_path, cv2.IMREAD_GRAYSCALE)
+
+    gaussian_kernel = define_gaussian_kernel(kernel_size, sigma)
+    print(gaussian_kernel)
+    height, width = src.shape[0],src.shape[1]
+    new_image = np.zeros((height,width), dtype=np.uint8)
+    filtering(height, width, gaussian_kernel, src, new_image)
+    util.compare_image("gaussian", new_image, src)
+
+
+def show_mean_filtering_result():
+    file_path = "..\\highboost_filtering\\images\\grayscale_noisy\\fig_a_salt_n_pepper.jpg"
+    mean_filtering(file_path, 3)
+    file_path = "..\\highboost_filtering\\images\\grayscale_noisy\\fig_a_salt_n_pepper.jpg"
+    gaussian_fltering(file_path, 1)
+
+
+def show_gaussian_filtering_result():
+    file_path = "..\\highboost_filtering\\images\\grayscale_noisy\\fig_a_gaussian.jpg"
+    mean_filtering(file_path, 3)
+    file_path = "..\\highboost_filtering\\images\\grayscale_noisy\\fig_a_gaussian.jpg"
+    gaussian_fltering(file_path, 3, 1)
+
+
+show_gaussian_filtering_result()
