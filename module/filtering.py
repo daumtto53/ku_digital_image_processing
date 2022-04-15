@@ -1,3 +1,5 @@
+import copy
+
 import cv2
 import numpy as np
 import sys
@@ -5,13 +7,20 @@ import util
 import rgb_hsi_conversion
 from math import acos, cos, pi, sqrt, radians, degrees, exp
 
+HIGH_BOOST_1 = np.array([[0.0, -1.0, 0.0], [-1.0, 4.0, -1.0], [0.0, -1.0, 0.0]])
+HIGH_BOOST_2 = np.array([[-1.0, -1.0, -1.0], [-1.0, 8.0, -1.0], [-1.0, -1.0, -1.0]])
 
 def apply_kernel(u, v, kernel, kernel_height, kernel_width, old_image, new_image):
+
     offset_h, offset_w = int(kernel_height / 2), int(kernel_width / 2)
     new_value = 0
     for i in range(-1 * offset_h, offset_h + 1) :
         for j in range(-1 * offset_w, offset_w + 1) :
             new_value = new_value + (old_image[u + i][v + j] * kernel[offset_h + i][offset_w + j])
+    if new_value >= 255:
+        new_value = 255
+    if new_value < 0:
+        new_value = 0
     new_image[u][v] = int(new_value) # float to int
 
 
@@ -48,6 +57,13 @@ def define_gaussian_kernel(size, sigma):
     return gaussian_kernel
 
 
+def define_high_boost_kernel(A, high_boost_kernel):
+
+    return_kernel = copy.deepcopy(high_boost_kernel)
+    return_kernel[1][1] = high_boost_kernel[1][1] + A
+    return return_kernel
+
+
 def filtering(height, width, kernel, old_image, new_image) :
     kernel_height, kernel_width = find_kernel_size(kernel)
     offset_h = int(kernel_height / 2)
@@ -78,14 +94,14 @@ def gaussian_filtering(file_path, kernel_size, sigma):
 
 
 def apply_median_kernel(u, v, kernel_height, kernel_width, old_image, new_image):
-        offset_h, offset_w = int(kernel_height / 2), int(kernel_width / 2)
-        to_sort = []
-        for i in range(-1 * offset_h, offset_h + 1):
-            for j in range(-1 * offset_w, offset_w + 1):
-                to_sort.append(old_image[u + i][v + j])
-        to_sort.sort()
-        median_index = int(kernel_width * kernel_height / 2)
-        new_image[u][v] = to_sort[median_index]
+    offset_h, offset_w = int(kernel_height / 2), int(kernel_width / 2)
+    to_sort = []
+    for i in range(-1 * offset_h, offset_h + 1):
+        for j in range(-1 * offset_w, offset_w + 1):
+             to_sort.append(old_image[u + i][v + j])
+    to_sort.sort()
+    median_index = int(kernel_width * kernel_height / 2)
+    new_image[u][v] = to_sort[median_index]
 
 
 def median_filtering(file_path, kernel_height, kernel_width):
@@ -99,6 +115,16 @@ def median_filtering(file_path, kernel_height, kernel_width):
         for j in range(offset_w, width - offset_w):
             apply_median_kernel(i, j, kernel_height, kernel_width, src, new_image)
     util.compare_image("median", new_image, src)
+
+
+def high_boost_filtering(file_path, high_boost_type, A) :
+    src = cv2.imread(file_path, cv2.IMREAD_GRAYSCALE)
+
+    height, width = src.shape[0],src.shape[1]
+    new_image = np.zeros((height,width), dtype=np.uint8)
+    high_boost_kernel = define_high_boost_kernel(A, high_boost_type)
+    filtering(height, width , high_boost_kernel, src, new_image)
+    util.compare_image("mean", new_image, src)
 
 
 def colorscale_mean_filtering_RGB(file_path, kernel_size):
@@ -251,11 +277,20 @@ def show_gaussian_filtering_result():
     file_path = "..\\highboost_filtering\\images\\grayscale_noisy\\fig_a_gaussian.jpg"
     gaussian_filtering(file_path, 3, 1)
 
+
 def show_median_filtering_result():
     file_path = "..\\highboost_filtering\\images\\grayscale_noisy\\fig_a_salt_n_pepper.jpg"
     median_filtering(file_path, 3, 3)
     file_path = "..\\highboost_filtering\\images\\grayscale_noisy\\fig_a_gaussian.jpg"
     median_filtering(file_path, 3, 3)
+
+
+def show_high_boost_filtering_result(high_boost_type, A):
+    file_path = "..\\highboost_filtering\\images\\high_boost\\tungsten.jpg"
+    high_boost_filtering(file_path, high_boost_type, A)
+
+    file_path = "..\\highboost_filtering\\images\\high_boost\\aerial.jpg"
+    high_boost_filtering(file_path, high_boost_type, A)
 
 
 def show_colorscale_mean_filtering_HSI_result(size, sigma):
@@ -279,7 +314,6 @@ def show_colorscale_mean_filtering_RGB_result(size, sigma):
     colorscale_gaussian_filtering_RGB(file_path, size, sigma)
 
 
-
 def show_colorscale_gaussian_filtering_RGB_result(size, sigma):
     file_path = "..\\highboost_filtering\\images\\grayscale_noisy\\fig_a_gaussian.jpg"
     colorscale_mean_filtering_RGB(file_path, size)
@@ -287,13 +321,11 @@ def show_colorscale_gaussian_filtering_RGB_result(size, sigma):
     colorscale_gaussian_filtering_RGB(file_path, size, sigma)
 
 
-
-
-
 # show_mean_filtering_result()
 # show_gaussian_filtering_result()
 # show_median_filtering_result()
-#
+show_high_boost_filtering_result(HIGH_BOOST_1, 1.2)
+# show_high_boost_filtering_result(HIGH_BOOST_2, 1.2)
 # size=3
 # sigma=1
 # show_colorscale_mean_filtering_RGB_result(size, sigma)
@@ -301,6 +333,5 @@ def show_colorscale_gaussian_filtering_RGB_result(size, sigma):
 # size=5
 # sigma=1
 # show_colorscale_gaussian_filtering_RGB_result(size, sigma)
-
 
 
