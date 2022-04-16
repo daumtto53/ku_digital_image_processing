@@ -1,5 +1,4 @@
 import copy
-
 import cv2
 import numpy as np
 import sys
@@ -9,6 +8,8 @@ from math import acos, cos, pi, sqrt, radians, degrees, exp
 
 HIGH_BOOST_1 = np.array([[0.0, -1.0, 0.0], [-1.0, 4.0, -1.0], [0.0, -1.0, 0.0]])
 HIGH_BOOST_2 = np.array([[-1.0, -1.0, -1.0], [-1.0, 8.0, -1.0], [-1.0, -1.0, -1.0]])
+result_path = "..\\highboost_filtering\\images\\result\\"
+result_type = ["grayscale", "color", "high_boost"]
 
 def apply_kernel(u, v, kernel, kernel_height, kernel_width, old_image, new_image):
 
@@ -53,7 +54,6 @@ def define_gaussian_kernel(size, sigma):
     for i in range(size):
         for j in range(size):
             gaussian_kernel[i][j] = gaussian_calculator(i - offset, j - offset, sigma)
-            print(i - offset, j- offset)
     return gaussian_kernel
 
 
@@ -74,6 +74,7 @@ def filtering(height, width, kernel, old_image, new_image) :
 
 
 def mean_filtering(file_path, kernel_size):
+
     src = cv2.imread(file_path, cv2.IMREAD_GRAYSCALE)
 
     mean_kernel = define_mean_kernel(kernel_size)
@@ -81,6 +82,8 @@ def mean_filtering(file_path, kernel_size):
     new_image = np.zeros((height,width), dtype=np.uint8)
     filtering(height, width, mean_kernel, src, new_image)
     util.compare_image("mean", new_image, src)
+    print(result_path + util.get_filename(file_path) + result_type[0] + "mean_" + str(kernel_size) + ".jpg")
+    cv2.imwrite(result_path + util.get_filename(file_path) + result_type[0] + "mean_" + str(kernel_size) + ".jpg", new_image)
 
 
 def gaussian_filtering(file_path, kernel_size, sigma):
@@ -91,6 +94,7 @@ def gaussian_filtering(file_path, kernel_size, sigma):
     new_image = np.zeros((height,width), dtype=np.uint8)
     filtering(height, width, gaussian_kernel, src, new_image)
     util.compare_image("gaussian", new_image, src)
+    cv2.imwrite(result_path + util.get_filename(file_path) + result_type[0] + "gaussian_" + str(kernel_size) + "_" + str(sigma) + ".jpg", new_image)
 
 
 def apply_median_kernel(u, v, kernel_height, kernel_width, old_image, new_image):
@@ -115,9 +119,10 @@ def median_filtering(file_path, kernel_height, kernel_width):
         for j in range(offset_w, width - offset_w):
             apply_median_kernel(i, j, kernel_height, kernel_width, src, new_image)
     util.compare_image("median", new_image, src)
+    cv2.imwrite(result_path + util.get_filename(file_path) + result_type[0] + "median_" + str(kernel_height)+str(kernel_width) + ".jpg", new_image)
 
 
-def high_boost_filtering(file_path, high_boost_type, A) :
+def high_boost_filtering(file_path, high_boost_type, A, type) :
     src = cv2.imread(file_path, cv2.IMREAD_GRAYSCALE)
 
     height, width = src.shape[0],src.shape[1]
@@ -125,6 +130,7 @@ def high_boost_filtering(file_path, high_boost_type, A) :
     high_boost_kernel = define_high_boost_kernel(A, high_boost_type)
     filtering(height, width , high_boost_kernel, src, new_image)
     util.compare_image("mean", new_image, src)
+    cv2.imwrite(result_path + util.get_filename(file_path) + result_type[0] + "high_boost_" + str(type) + str(A) + ".jpg", new_image)
 
 
 def colorscale_mean_filtering_RGB(file_path, kernel_size):
@@ -158,10 +164,8 @@ def colorscale_mean_filtering_RGB(file_path, kernel_size):
             new_image[i][j][2] = new_r[i][j]
 
     np.set_printoptions(threshold=sys.maxsize)
-    print(b_channel[1])
-    print()
-    print(new_b[1])
     util.compare_image("color_mean", new_image, src)
+    cv2.imwrite(result_path + util.get_filename(file_path) + result_type[1] + "mean_" + str(kernel_size) + ".png", new_image)
 
 
 def colorscale_gaussian_filtering_RGB(file_path, kernel_size, sigma):
@@ -195,6 +199,7 @@ def colorscale_gaussian_filtering_RGB(file_path, kernel_size, sigma):
             new_image[i][j][2] = new_r[i][j]
 
     util.compare_image("color_gaussian", new_image, src)
+    cv2.imwrite(result_path + util.get_filename(file_path) + result_type[1] + "gaussian" + str(kernel_size) + "_" + str(sigma) + ".png", new_image)
 
 
 def colorscale_mean_filtering_HSI(file_path, kernel_size) :
@@ -264,33 +269,45 @@ def colorscale_gaussian_filtering_HSI(file_path, kernel_size, sigma):
     util.compare_image("color_gaussian", new_image, src)
 
 
-def show_mean_filtering_result():
+def show_mean_filtering_result(size, sigma):
     file_path = "..\\highboost_filtering\\images\\grayscale_noisy\\fig_a_salt_n_pepper.jpg"
-    mean_filtering(file_path, 3)
+    mean_filtering(file_path, size)
     file_path = "..\\highboost_filtering\\images\\grayscale_noisy\\fig_a_salt_n_pepper.jpg"
-    gaussian_filtering(file_path, 3, 1)
+    gaussian_filtering(file_path, size, sigma)
+    file_path = "..\\highboost_filtering\\images\\grayscale_noisy\\fig_b_salt_n_pepper.jpg"
+    mean_filtering(file_path, size)
+    file_path = "..\\highboost_filtering\\images\\grayscale_noisy\\fig_b_salt_n_pepper.jpg"
+    gaussian_filtering(file_path, size, sigma)
 
 
-def show_gaussian_filtering_result():
+def show_gaussian_filtering_result(size, sigma):
     file_path = "..\\highboost_filtering\\images\\grayscale_noisy\\fig_a_gaussian.jpg"
-    mean_filtering(file_path, 3)
+    mean_filtering(file_path, size)
     file_path = "..\\highboost_filtering\\images\\grayscale_noisy\\fig_a_gaussian.jpg"
-    gaussian_filtering(file_path, 3, 1)
+    gaussian_filtering(file_path, size, sigma)
+    file_path = "..\\highboost_filtering\\images\\grayscale_noisy\\fig_b_gaussian.jpg"
+    mean_filtering(file_path, size)
+    file_path = "..\\highboost_filtering\\images\\grayscale_noisy\\fig_b_gaussian.jpg"
+    gaussian_filtering(file_path, size, sigma)
 
 
-def show_median_filtering_result():
+def show_median_filtering_result(kernel_height, kernel_width):
     file_path = "..\\highboost_filtering\\images\\grayscale_noisy\\fig_a_salt_n_pepper.jpg"
-    median_filtering(file_path, 3, 3)
+    median_filtering(file_path, kernel_height, kernel_width)
     file_path = "..\\highboost_filtering\\images\\grayscale_noisy\\fig_a_gaussian.jpg"
-    median_filtering(file_path, 3, 3)
+    median_filtering(file_path, kernel_height, kernel_width)
+    file_path = "..\\highboost_filtering\\images\\grayscale_noisy\\fig_b_salt_n_pepper.jpg"
+    median_filtering(file_path, kernel_height, kernel_width)
+    file_path = "..\\highboost_filtering\\images\\grayscale_noisy\\fig_b_gaussian.jpg"
+    median_filtering(file_path, kernel_height, kernel_width)
 
 
-def show_high_boost_filtering_result(high_boost_type, A):
+def show_high_boost_filtering_result(high_boost_type, A, type):
     file_path = "..\\highboost_filtering\\images\\high_boost\\tungsten.jpg"
-    high_boost_filtering(file_path, high_boost_type, A)
+    high_boost_filtering(file_path, high_boost_type, A, type)
 
     file_path = "..\\highboost_filtering\\images\\high_boost\\aerial.jpg"
-    high_boost_filtering(file_path, high_boost_type, A)
+    high_boost_filtering(file_path, high_boost_type, A, type)
 
 
 def show_colorscale_mean_filtering_HSI_result(size, sigma):
@@ -315,16 +332,73 @@ def show_colorscale_mean_filtering_RGB_result(size, sigma):
 
 
 def show_colorscale_gaussian_filtering_RGB_result(size, sigma):
-    file_path = "..\\highboost_filtering\\images\\grayscale_noisy\\fig_a_gaussian.jpg"
+    file_path = "..\\highboost_filtering\\images\\color_noisy\\Lena_noise.png"
     colorscale_mean_filtering_RGB(file_path, size)
-    file_path = "..\\highboost_filtering\\images\\grayscale_noisy\\fig_a_gaussian.jpg"
+    file_path = "..\\highboost_filtering\\images\\color_noisy\\Lena_noise.png"
     colorscale_gaussian_filtering_RGB(file_path, size, sigma)
+
+
+def assignment():
+    show_mean_filtering_result(3, 0.5)
+    show_mean_filtering_result(3, 1)
+    show_mean_filtering_result(3, 2)
+    show_mean_filtering_result(5,0.5)
+    show_mean_filtering_result(5, 1)
+    show_mean_filtering_result(5, 2)
+
+    show_gaussian_filtering_result(3, 0.5)
+    show_gaussian_filtering_result(3, 1)
+    show_gaussian_filtering_result(3, 2)
+    show_gaussian_filtering_result(5,0.5)
+    show_gaussian_filtering_result(5, 1)
+    show_gaussian_filtering_result(5, 2)
+
+    show_median_filtering_result(3,3)
+
+    show_high_boost_filtering_result(HIGH_BOOST_1, 1, 1)
+    show_high_boost_filtering_result(HIGH_BOOST_1, 1.2, 1)
+    show_high_boost_filtering_result(HIGH_BOOST_1, 1.4, 1)
+    show_high_boost_filtering_result(HIGH_BOOST_1, 1.7, 1)
+
+    show_high_boost_filtering_result(HIGH_BOOST_2, 1, 2)
+    show_high_boost_filtering_result(HIGH_BOOST_2, 1.2, 2)
+    show_high_boost_filtering_result(HIGH_BOOST_2, 1.4, 2)
+    show_high_boost_filtering_result(HIGH_BOOST_2, 1.7, 2)
+
+    show_colorscale_mean_filtering_RGB_result(3, 1)
+    show_colorscale_mean_filtering_RGB_result(3, 1.2)
+    show_colorscale_mean_filtering_RGB_result(5, 1)
+    show_colorscale_mean_filtering_RGB_result(5, 1.2)
+    show_colorscale_mean_filtering_RGB_result(7, 1)
+    show_colorscale_mean_filtering_RGB_result(7, 1.2)
+
+    show_colorscale_gaussian_filtering_RGB_result(3, 1)
+    show_colorscale_gaussian_filtering_RGB_result(3, 1.2)
+    show_colorscale_gaussian_filtering_RGB_result(5, 1)
+    show_colorscale_gaussian_filtering_RGB_result(5, 1.2)
+    show_colorscale_gaussian_filtering_RGB_result(7, 1)
+    show_colorscale_gaussian_filtering_RGB_result(7, 1.2)
+
+def assignment_highboost():
+    show_high_boost_filtering_result(HIGH_BOOST_1, 1, 1)
+    show_high_boost_filtering_result(HIGH_BOOST_1, 1.2, 1)
+    show_high_boost_filtering_result(HIGH_BOOST_1, 1.4, 1)
+    show_high_boost_filtering_result(HIGH_BOOST_1, 1.7, 1)
+
+    show_high_boost_filtering_result(HIGH_BOOST_2, 1, 2)
+    show_high_boost_filtering_result(HIGH_BOOST_2, 1.2, 2)
+    show_high_boost_filtering_result(HIGH_BOOST_2, 1.4, 2)
+    show_high_boost_filtering_result(HIGH_BOOST_2, 1.7, 2)
+
+
+# assignment()
+assignment_highboost()
 
 
 # show_mean_filtering_result()
 # show_gaussian_filtering_result()
 # show_median_filtering_result()
-show_high_boost_filtering_result(HIGH_BOOST_1, 1.2)
+# show_high_boost_filtering_result(HIGH_BOOST_1, 1.2)
 # show_high_boost_filtering_result(HIGH_BOOST_2, 1.2)
 # size=3
 # sigma=1
