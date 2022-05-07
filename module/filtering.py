@@ -392,8 +392,8 @@ def assignment_highboost():
 
 
 # assignment()
-assignment_highboost()
-
+# assignment_highboost()
+# show_median_filtering_result(5, 5)
 
 # show_mean_filtering_result()
 # show_gaussian_filtering_result()
